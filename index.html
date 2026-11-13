@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haedr Technology Store | مركز خدمات التكنولوجيا</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background: #0a0a0a; color: #ffffff; line-height: 1.6; padding-bottom: 80px; }
+        
+        header { background: linear-gradient(135deg, #000000, #111111); color: white; padding: 1rem 1.2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.6rem; box-shadow: 0 2px 15px rgba(0, 191, 255, 0.2); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #00bfff; }
+        .logo-container { display: flex; align-items: center; gap: 10px; }
+        .logo-container img { height: 45px; width: 45px; border-radius: 10px; object-fit: contain; box-shadow: 0 0 10px rgba(0, 191, 255, 0.5); }
+        .logo-text { font-size: 1.1rem; font-weight: 700; display: flex; flex-direction: column; }
+        .logo-text span { font-size: 0.7rem; color: #00bfff; font-weight: 400; }
+        
+        .badges { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+        .badge { padding: 0.35rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+        .badge-visitors { background: rgba(0, 191, 255, 0.15); color: #00bfff; border: 1px solid #00bfff; }
+        .badge-open { background: #00ff88; color: #000000; }
+        .badge-closed { background: #ff0044; color: white; }
+        
+        .store-info { background: #151515; margin: 1rem; padding: 1.2rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); border: 1px solid #222; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
+        .info-item { display: flex; align-items: center; gap: 0.6rem; }
+        .info-item .icon { font-size: 1.4rem; color: #00bfff; }
+        .info-item .label { font-size: 0.7rem; color: #888; }
+        .info-item .value { font-weight: 600; font-size: 0.9rem; color: #fff; }
+        
+        .section-title { margin: 1.2rem 1rem 0.5rem; font-size: 1.2rem; color: #00bfff; text-shadow: 0 0 10px rgba(0, 191, 255, 0.3); }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.8rem; padding: 0.5rem 1rem; }
+        .product-card { background: #151515; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.5); transition: transform 0.2s; border: 1px solid #222; }
+        .product-card:hover { transform: translateY(-5px); border-color: #00bfff; box-shadow: 0 5px 15px rgba(0, 191, 255, 0.2); }
+        .product-card img { width: 100%; height: 130px; object-fit: cover; background: #222; }
+        .product-info { padding: 0.7rem; }
+        .product-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.2rem; color: #fff; }
+        .product-desc { color: #00bfff; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.6rem; }
+        .btn-whatsapp { display: block; text-align: center; background: #25D366; color: #000; padding: 0.45rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.8rem; }
+        
+        .chat-button { position: fixed; bottom: 20px; left: 20px; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #00bfff, #0055ff); color: white; border: none; font-size: 1.6rem; cursor: pointer; box-shadow: 0 4px 20px rgba(0, 191, 255, 0.6); z-index: 1000; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
+        .chat-button:hover { transform: scale(1.1); }
+        
+        .chat-window { position: fixed; bottom: 90px; left: 20px; width: 340px; max-width: calc(100vw - 40px); height: 500px; max-height: calc(100vh - 120px); background: #111; border-radius: 16px; box-shadow: 0 10px 40px rgba(0, 191, 255, 0.3); display: none; flex-direction: column; z-index: 1000; overflow: hidden; border: 1px solid #00bfff; }
+        .chat-window.open { display: flex; }
+        .chat-header { background: linear-gradient(135deg, #000, #111); color: #00bfff; padding: 1rem; font-weight: 700; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
+        .chat-header .close-btn { background: none; border: none; color: #fff; font-size: 1.4rem; cursor: pointer; }
+        
+        footer { background: #000; color: #888; text-align: center; padding: 1.2rem; margin-top: 1.5rem; font-size: 0.8rem; border-top: 1px solid #222; }
+        @media (max-width: 400px) { .chat-window { width: calc(100vw - 20px); left: 10px; height: 75vh; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo-container">
+        <!-- الشعار (يمكنك رفعه بنفس الطريقة لاحقاً) -->
+        <div class="logo-text">HAEDR <span>Technology Store</span></div>
+    </div>
+    <div class="badges">
+        <span class="badge badge-visitors" id="visitor-count">👁️ ...</span>
+        <span class="badge badge-closed" id="store-status">...</span>
+    </div>
+</header>
+
+<section class="store-info">
+    <div class="info-item"><span class="icon">📍</span><div><div class="label">العنوان</div><div class="value" id="store-address">جاري التحميل...</div></div></div>
+    <div class="info-item"><span class="icon">🕒</span><div><div class="label">ساعات العمل</div><div class="value" id="store-hours">جاري التحميل...</div></div></div>
+    <div class="info-item"><span class="icon">📞</span><div><div class="label">اتصل بنا</div><div class="value" id="store-phone">جاري التحميل...</div></div></div>
+</section>
+
+<h2 class="section-title">⚡ أقسام المتجر والخدمات</h2>
+<div class="product-grid" id="product-grid"></div>
+
+<footer>© 2026 HAEDR Technology Store - جميع الحقوق محفوظة</footer>
+
+<button class="chat-button" id="chatBtn" onclick="toggleChat()">💬</button>
+
+<div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+        <span>🤖 المساعد الذكي</span>
+        <button class="close-btn" onclick="toggleChat()">✕</button>
+    </div>
+    <!-- رابط البوت الجديد الخاص بالوكالة -->
+    <iframe src="https://ai-agency-hmyxltch8zhzsbjujpvd5l.streamlit.app/?store=haedr_tech&embed=true" width="100%" height="100%" style="border: none; flex: 1;"></iframe>
+</div>
+
+<script>
+    let storeConfig = {};
+
+    // جلب البيانات من ملف الوكالة الجديد
+    fetch('https://raw.githubusercontent.com/h2032718-cyber/haedr-ai-agency/main/data/haedr_tech.json')
+        .then(response => response.json())
+        .then(data => {
+            storeConfig = data.store_info;
+            
+            // تحديث معلومات المتجر
+            if(storeConfig.address) document.getElementById('store-address').textContent = storeConfig.address;
+            if(storeConfig.whatsapp) document.getElementById('store-phone').textContent = storeConfig.whatsapp;
+            
+            // تنسيق ساعات العمل
+            if(storeConfig.openHour !== undefined) {
+                let open = storeConfig.openHour;
+                let close = storeConfig.closeHour;
+                let ampmOpen = open >= 12 ? 'م' : 'ص';
+                let ampmClose = close >= 12 ? 'م' : 'ص';
+                let displayOpen = open > 12 ? open - 12 : open;
+                let displayClose = close > 12 ? close - 12 : close;
+                document.getElementById('store-hours').textContent = `${displayOpen}:00 ${ampmOpen} - ${displayClose}:00 ${ampmClose}`;
+            }
+
+            // عرض الخدمات
+            const grid = document.getElementById('product-grid');
+            if(data.products && data.products.length > 0) {
+                data.products.forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+                    card.innerHTML = `
+                        <img src="${p.image || 'https://via.placeholder.com/300/000000/00bfff?text=خدمة'}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300/000000/00bfff?text=خدمة'">
+                        <div class="product-info">
+                            <div class="product-name">${p.name}</div>
+                            <div class="product-desc">${p.desc}</div>
+                            <a href="https://wa.me/${storeConfig.whatsapp}?text=${encodeURIComponent(p.msg || 'أريد الاستفسار')}" target="_blank" class="btn-whatsapp">💬 استفسار</a>
+                        </div>`;
+                    grid.appendChild(card);
+                });
+            } else {
+                grid.innerHTML = '<p style="padding: 1rem; color: #888;">لا توجد خدمات مضافة حالياً.</p>';
+            }
+            
+            updateStatus();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('store-address').textContent = 'تعذر تحميل البيانات';
+        });
+
+    function updateVisitors() {
+        let count = parseInt(localStorage.getItem('visitorCount') || '1247');
+        if (!sessionStorage.getItem('visited')) {
+            count++;
+            localStorage.setItem('visitorCount', count);
+            sessionStorage.setItem('visited', 'true');
+        }
+        document.getElementById('visitor-count').textContent = `👁️ ${count.toLocaleString('ar-EG')}`;
+    }
+    updateVisitors();
+
+    function updateStatus() {
+        if (storeConfig.openHour === undefined) return;
+        const now = new Date();
+        const isOpen = (now.getDay() !== storeConfig.closedDay) && (now.getHours() >= storeConfig.openHour && now.getHours() < storeConfig.closeHour);
+        const el = document.getElementById('store-status');
+        el.textContent = isOpen ? '✅ مفتوح الآن' : '❌ مغلق';
+        el.className = 'badge ' + (isOpen ? 'badge-open' : 'badge-closed');
+    }
+    setInterval(updateStatus, 60000);
+
+    function toggleChat() {
+        document.getElementById('chatWindow').classList.toggle('open');
+    }
+</script>
+</body>
+</html>
