@@ -1,0 +1,13 @@
+{
+  "store_info": {
+    "name": "Haedr Technology Store",
+    "description": "متجر إلكتروني لخدمات التكنولوجيا",
+    "whatsapp": "963992099794",
+    "openHour": 8,
+    "closeHour": 20,
+    "closedDay": 5,
+    "address": "دمشق - سوريا"
+  },
+  "products": [],
+  "qa_data": []
+}
