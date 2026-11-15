@@ -71,45 +71,48 @@
 <script>
     let storeConfig = {};
 
-    fetch('https://raw.githubusercontent.com/h2032718-cyber/haedr-ai-agency/main/data/haedr_tech.json')
-        .then(response => response.json())
-        .then(data => {
-            storeConfig = data.store_info;
-            
-            if(storeConfig.address) document.getElementById('store-address').textContent = storeConfig.address;
-            if(storeConfig.whatsapp) document.getElementById('store-phone').textContent = storeConfig.whatsapp;
-            
-            if(storeConfig.openHour !== undefined) {
-                let open = storeConfig.openHour;
-                let close = storeConfig.closeHour;
-                let ampmOpen = open >= 12 ? 'م' : 'ص';
-                let ampmClose = close >= 12 ? 'م' : 'ص';
-                let displayOpen = open > 12 ? open - 12 : open;
-                let displayClose = close > 12 ? close - 12 : close;
-                document.getElementById('store-hours').textContent = `${displayOpen}:00 ${ampmOpen} - ${displayClose}:00 ${ampmClose}`;
-            }
+    // التعديل هنا: استخدام GitHub API بدلاً من الرابط المباشر
+    fetch('https://api.github.com/repos/h2032718-cyber/haedr-ai-agency/contents/data/haedr_tech.json', {
+        headers: { 'Accept': 'application/vnd.github.v3.raw' }
+    })
+    .then(response => response.json())
+    .then(data => {
+        storeConfig = data.store_info;
+        
+        if(storeConfig.address) document.getElementById('store-address').textContent = storeConfig.address;
+        if(storeConfig.whatsapp) document.getElementById('store-phone').textContent = storeConfig.whatsapp;
+        
+        if(storeConfig.openHour !== undefined) {
+            let open = storeConfig.openHour;
+            let close = storeConfig.closeHour;
+            let ampmOpen = open >= 12 ? 'م' : 'ص';
+            let ampmClose = close >= 12 ? 'م' : 'ص';
+            let displayOpen = open > 12 ? open - 12 : open;
+            let displayClose = close > 12 ? close - 12 : close;
+            document.getElementById('store-hours').textContent = `${displayOpen}:00 ${ampmOpen} - ${displayClose}:00 ${ampmClose}`;
+        }
 
-            const grid = document.getElementById('product-grid');
-            if(data.products && data.products.length > 0) {
-                data.products.forEach(p => {
-                    const card = document.createElement('div');
-                    card.className = 'product-card';
-                    card.innerHTML = `
-                        <img src="${p.image || 'https://via.placeholder.com/300/000000/00bfff?text=خدمة'}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300/000000/00bfff?text=خدمة'">
-                        <div class="product-info">
-                            <div class="product-name">${p.name}</div>
-                            <div class="product-desc">${p.desc}</div>
-                            <a href="https://wa.me/${storeConfig.whatsapp}?text=${encodeURIComponent(p.msg || 'أريد الاستفسار')}" target="_blank" class="btn-whatsapp">💬 استفسار</a>
-                        </div>`;
-                    grid.appendChild(card);
-                });
-            } else {
-                grid.innerHTML = '<p style="padding: 1rem; color: #888;">لا توجد خدمات مضافة حالياً.</p>';
-            }
-            
-            updateStatus();
-        })
-        .catch(error => console.error('Error:', error));
+        const grid = document.getElementById('product-grid');
+        if(data.products && data.products.length > 0) {
+            data.products.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <img src="${p.image || 'https://via.placeholder.com/300/000000/00bfff?text=خدمة'}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300/000000/00bfff?text=خدمة'">
+                    <div class="product-info">
+                        <div class="product-name">${p.name}</div>
+                        <div class="product-desc">${p.desc}</div>
+                        <a href="https://wa.me/${storeConfig.whatsapp}?text=${encodeURIComponent(p.msg || 'أريد الاستفسار')}" target="_blank" class="btn-whatsapp">💬 استفسار</a>
+                    </div>`;
+                grid.appendChild(card);
+            });
+        } else {
+            grid.innerHTML = '<p style="padding: 1rem; color: #888;">لا توجد خدمات مضافة حالياً.</p>';
+        }
+        
+        updateStatus();
+    })
+    .catch(error => console.error('Error:', error));
 
     function updateVisitors() {
         let count = parseInt(localStorage.getItem('visitorCount') || '1247');
